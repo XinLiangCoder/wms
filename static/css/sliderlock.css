@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+#slider {
+	height: 35px;
+	margin-top:5px;
+	position: relative;
+	padding-left: 40px;
+	margin-right:65px;
+}
+
+#slider a {
+	top: 0.5px;
+	bottom:0.5px;
+	height: 34px;
+	width: 46px;
+	margin-left: 12px;
+	font-size: 25px;
+	padding-left: 8px;
+}

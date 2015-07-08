@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>管理员管理-{$site.SITE_INFO.name}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='管理员管理 > 管理员列表';
+        </php>
+        <include file="Common:intoHead" />
+    </head>
+    <body>
+        <div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">管理员列表</div>
+                        <div class="current" style="float:right;"><a href="__URL__/add">添加管理员</a></div>
+                    </div>
+                    <form id="_Table" action="" method="post">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                        <thead>
+                            <tr>
+                            	<td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                                <td>编号</td>
+                                <td>账号</td>
+                                <td>状态</td>
+                                <td>所在组</td>
+                                <td>备注</td>
+                                <td>登录次数</td>
+                                <td>开通时间</td>
+                                <td width="150">操作</td>
+                            </tr>
+                        </thead>
+                        <volist name="list" id="vo">
+                            <tr align="center" id="{$vo.id}">
+                            	<td>
+                            	<if condition="$vo.id neq '1' ">
+                            	<input type="checkbox" name="ids[]" value="{$vo.id}"/>
+                            	</if>
+                            	</td>
+                                <td>{$vo.id}</td>
+                                <td>{$vo.username|SetDefaultValue}</td>
+								<td>
+								<if condition="$vo.status eq '1' ">
+                                	<span style="color:#090">启用</span>
+                                <elseif condition="$vo.status eq '2'"  />
+                                	<span style="color:#F00">禁用</span>
+                                </if>
+                                </td>
+                                <td>{$vo.rolegroup}</td>
+                                <td>{$vo.note|SetDefaultValue}</td>
+                                <td>{$vo.login_count}</td>
+                                <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                                <td><if condition="$vo.username eq C('ADMIN_AUTH_KEY')">--
+                                	<else/>
+                                	[ <a href="__URL__/edit/id/{$vo.id}/v/{$vo.id|Params_Encry}">编辑</a> ]
+                                	<if condition="$vo.status eq '1'">
+                                	[ <a class="update" href="javascript:void(0)" link="__URL__/status/id/{$vo.id}/s/2/v/{$vo.id|Params_Encry}">禁用</a> ]
+                                	<elseif condition="$vo.status eq '2'" />
+                                	[ <a class="update" href="javascript:void(0)" link="__URL__/status/id/{$vo.id}/s/1/v/{$vo.id|Params_Encry}">启用</a> ]
+                                	</if>
+                                	</if>
+                                	[ <a href="__URL__/details/id/{$vo.id}/v/{$vo.id|Params_Encry}">详情</a> ]
+                                	</td>
+                            </tr>
+                        </volist>
+                    </table>
+                    </form>
+                    <div class="commonBtnArea" >
+                    	<button class="btn submit">删除所选</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <include file="Common:foot" />
+        <script type="text/javascript">
+			$(function(){
+				$(".update").click(function(){
+					var _URL = $(this).attr("link");
+					popup.confirm('你确定要执行吗？','温馨提示',function(action){
+						if(action == 'ok'){
+							$.get(_URL,function(_DATA){
+								if(_DATA.status == 1){
+									popup.alert(_DATA.msg);
+									setTimeout("location.reload()",1000);
+								}else{
+									popup.alert(_DATA.msg);
+									setTimeout("location.reload()",1000);
+								}
+							},"json");
+						}
+					});
+					return false;
+				});
+				/** 全选 OR 反选 **/
+				clickCheckbox();  
+				$(".submit").click(function(){
+					if($("tbody input[type='checkbox']:checked").size()==0){
+		                popup.alert("请先选择你要删除的数据");
+		                return false;
+		            }else{
+		            	popup.confirm('你确定要删除吗？','温馨提示',function(action){
+		            		if(action == 'ok'){
+		            			if($(".submit").attr("disabledSubmit")){
+		                            popup.alert("已提交，系统在处理中...");
+		                        }else{
+		                            $(".submit").attr("disabledSubmit",true).html("处理中...");
+		                            commonAjaxSubmit("__URL__/del","#_Table");
+		                            //popup.alert("系统处理中，如果删除较多可能需要较长时间，请稍候....");
+		                            setTimeout(function(){
+		                                popup.close("asyncbox_alert");
+		                            },2000);
+		                        }
+			            	}
+			            });
+			        }
+				});
+			})
+		</script>
+    </body>
+</html>

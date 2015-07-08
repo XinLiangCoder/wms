@@ -1,0 +1,512 @@
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
+.comp_dialog_overlay {
+  BACKGROUND: #000;
+  opacity: 0.6;
+  FILTER: alpha(opacity:60)\9;
+}
+.comp_dialog {
+  _width: 1%;
+  BACKGROUND: #fff;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-box-shadow: 2px 2px 20px #333;
+  -webkit-box-shadow: 2px 2px 20px #333;
+  box-shadow: 2px 2px 20px #333;
+}
+.comp_dialog_box {
+  position: relative;
+  zoom: 1;
+}
+.comp_dialog .comp_dialog_bar .comp_dialog_title {
+  
+  line-height: 25px;
+  MARGIN-RIGHT: 10px;
+  font-family: "幼圆", "microsoft yahei";
+  font-size: 24px;
+
+}
+.comp_dialog_bar {margin-bottom:25px;}
+.comp_dialog .comp_dialog_bar .comp_dialog_close {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  CURSOR: pointer;
+  display: block;
+  width: 14px;
+  height: 14px;
+  background: url(../images/dialog/icon_close.png) no-repeat;
+}
+.comp_dialog .comp_dialog_content {
+  _width: 320px;
+  /*min-width: 320px;
+  max-width: 720px;*/
+  BACKGROUND: #fff;
+}
+.comp_dialog .comp_dialog_content table {
+  margin-top: 12px;
+}
+.comp_dialog .comp_dialog_content .main-info {
+  margin-top: 19px;
+}
+.comp_dialog .comp_dialog_content table caption {
+  height: 20px;
+}
+.comp_dialog .comp_dialog_content table td {
+  height: 20px;
+  color: #303030;
+  vertical-align: top;
+}
+.comp_dialog .comp_dialog_content table td strong {
+  color: #838383;
+  font: normal 12px microsoft yahei;
+}
+.comp_dialog .comp_dialog_content table td .invoice_num {
+  margin-right: 16px;
+}
+.comp_dialog .comp_dialog_content table td .invoice_code {
+  margin-right: 16px;
+}
+.comp_dialog .comp_dialog_content table td .focus {
+  color: #ea1616;
+}
+.comp_dialog .comp_dialog_content table .lst {
+  display: inline;
+}
+.comp_dialog .comp_dialog_content table .lst dd {
+  display: inline;
+  margin-right: 20px;
+}
+.comp_dialog .comp_dialog_content .dividing-line {
+  overflow: hidden;
+  height: 1px;
+  margin-top: 14px;
+  background: #ededed;
+  border: 0 none;
+  color: #ededed;
+  font-size: 0;
+}
+.comp_dialog .comp_dialog_content .merga-records {
+  display: block;
+  height: 20px;
+  margin-top: 19px;
+  color: #303030;
+  font-weight: normal;
+}
+.comp_dialog .comp_dialog_content table .select-box {
+  height: 30px;
+}
+.comp_dialog .comp_dialog_content table .select-box strong {
+  display: inline-block;
+  height: 23px;
+  padding-top: 7px;
+  vertical-align: top;
+}
+.comp_dialog .comp_dialog_content h3 {
+  position: relative;
+  top: -5px;
+  height: 32px;
+  font: 24px/32px "幼圆", microsoft yahei;
+}
+.comp_dialog .comp_dialog_content h3 strong {
+  display: inline-block;
+  width: 33px;
+  height: 32px;
+  margin-right: 10px;
+  background: url(../images/dialog/sf_icon.png) no-repeat;
+  vertical-align: bottom;
+}
+.comp_dialog .comp_dialog_content h3 .icon-tips {
+  background-position: -58px -52px;
+}
+.comp_dialog .comp_dialog_content h3 .icon-right {
+  background-position: -4px -52px;
+}
+.comp_dialog .comp_dialog_content form {
+  margin-top: 23px;
+}
+.comp_dialog .comp_dialog_content form label {
+  display: inline-block !important;
+  padding-top: 7px;
+  color: #838383;
+  vertical-align: top;
+}
+.comp_dialog .comp_dialog_content form .input-title {
+  display: block;
+  padding-bottom: 7px;
+  color: #838383;
+  font-weight: normal;
+}
+.comp_dialog .comp_dialog_content form .input-wid {
+  width: 82px !important;
+}
+.comp_dialog .comp_dialog_content form .input-wid02 {
+  float: left;
+  width: 134px !important;
+  white-space: nowrap;
+}
+.comp_dialog .comp_dialog_content form .input-title span {
+  margin-right: 6px;
+  color: red;
+  vertical-align: middle;
+}
+.comp_dialog .comp_dialog_content form .input-title b {
+  display: block;
+  padding-left: 12px;
+  color: #303030;
+}
+.comp_dialog .comp_dialog_content form .input-box {
+  width: 378px;
+  height: 64px;
+  padding: 7px 10px;
+  border: 1px solid #ededed;
+  color: #d5d5d5;
+}
+.comp_dialog .comp_dialog_content form .input-text {
+  float: left;
+  width: 338px;
+  height: 78px;
+  background: url(../images/dialog/textarea-bg.png) no-repeat;
+  border: 1px solid #ededed;
+  color: #d5d5d5;
+}
+.comp_dialog .comp_dialog_content form .input-text textarea {
+  width: 318px;
+  height: 64px;
+  margin-top: 2px;
+  padding: 5px 9px 7px;
+  border: 1px solid #f8f8f8;
+  border-width: 0 1px;
+}
+.comp_dialog .comp_dialog_content form .input-banner {
+  width: 475px;
+}
+.comp_dialog .comp_dialog_content form table {
+  margin-top: 0;
+}
+.comp_dialog .comp_dialog_content form table th {
+  color: #838383;
+}
+.comp_dialog .comp_dialog_content form table th,
+.comp_dialog .comp_dialog_content form table td {
+  height: 20px;
+  vertical-align: top;
+}
+.comp_dialog .comp_dialog_content form .line {
+  clear: both;
+  margin-bottom: 20px;
+}
+.comp_dialog .comp_dialog_content form .check-lst {
+  overflow: hidden;
+  position: relative;
+  float: left;
+  width: 304px;
+  height: 25px;
+  margin-right: -20px;
+  padding-top: 5px;
+  _zoom: 1;
+}
+.comp_dialog .comp_dialog_content form .check-lst li {
+  display: inline;
+  float: left;
+  height: 23px;
+  margin-right: 12px;
+  vertical-align: top;
+}
+.comp_dialog .comp_dialog_content form .check-lst li input {
+  margin-right: 10px;
+}
+.comp_dialog .comp_dialog_content form .check-lst li .comp_checkimg {
+  margin-top: 0;
+}
+.comp_dialog .comp_dialog_content .form {
+  margin-top: 15px;
+}
+.comp_dialog .comp_dialog_content .form div.rowspan {
+  clear: both;
+  height: 30px;
+  padding-bottom: 20px;
+  font-size: 0;
+}
+.comp_dialog .comp_dialog_content .form div.rowspan span {
+  display: inline-block;
+  height: 30px;
+  font-size: 12px;
+  line-height: 30px;
+}
+.comp_dialog .comp_dialog_content .form div.rowspan label {
+  display: inline;
+  float: left;
+  width: 90px;
+  height: 30px;
+  padding-top: 0;
+  font-size: 12px;
+  line-height: 30px;
+  vertical-align: top;
+}
+.comp_dialog .comp_dialog_content .form div.rowspan .input {
+  float: left;
+  width: 188px;
+  _width: 185px;
+  height: 28px;
+  background: url(../images/dialog/input_bg.png) no-repeat;
+  border: 1px solid #d5d5d5;
+  padding-left: 10px;
+  color: #303030;
+  line-height: 30px;
+  font-size: 12px;
+}
+.comp_dialog .comp_dialog_content .form div.rowspan .text {
+  font-size: 12px;
+  line-height: 30px;
+}
+.comp_dialog .comp_dialog_content .form div.rowspan .tips {
+  padding-left: 10px;
+  font-size: 12px;
+  line-height: 30px;
+}
+.comp_dialog .comp_dialog_content .form div .rowtitle {
+  display: inline;
+  float: left;
+  width: 72px;
+  margin-left: 11px;
+}
+.comp_dialog .comp_dialog_content .form div.rowspan .comp_yselector {
+  display: inline;
+  float: left;
+  margin-right: 10px;
+}
+.comp_dialog .comp_dialog_content .loading {
+  padding-top: 38px;
+  text-align: center;
+}
+.comp_dialog .comp_dialog_content .loading img {
+  margin-right: 10px;
+  vertical-align: top;
+}
+.comp_dialog .comp_dialog_content .code-lst {
+  overflow: hidden;
+  color: #838383;
+  line-height: 20px;
+  _zoom: 1;
+}
+.comp_dialog .comp_dialog_content .code-lst dt {
+  width: 100px;
+}
+.comp_dialog .comp_dialog_content .code-lst dt,
+.comp_dialog .comp_dialog_content .code-lst dd {
+  float: left;
+}
+.comp_dialog .comp_dialog_content .code-lst dd li {
+  color: #303030;
+}
+.comp_dialog .comp_dialog_content .comp_yselector {
+  *display: inline;
+  *zoom: 1;
+}
+.comp_dialog IFRAME {
+  WIDTH: 100%;
+  HEIGHT: 100%;
+}
+.comp_dialog_bbar {
+  padding-left: 43px;
+  line-height: 38px;
+  margin-top: 30px;
+  clear: both;
+}
+.comp_dialog_bbar a {
+  padding: 0;
+}
+.comp_dialog_bbar a.comp_dialog_no {
+  margin-left: 20px;
+}
+.comp_dialog_icons {
+  background: url(../images/dialog/sf_icon.png) no-repeat;
+}
+.comp_dialog_content h1 {
+  background-position: -187px 0px;
+  background: url(../images/dialog/sf_icon.png) no-repeat;
+  width: 100%;
+  height: 36px;
+  font-size: 13pt;
+}
+.comp_dialog_content .tips {
+  padding-left: 42px;
+  color: #838383;
+}
+.comp_dialog_sfimgview {
+  background: url(../images/dialog/sf_imgview.png) no-repeat;
+}
+.comp_dialog_imgview_prev {
+  background-position: -6px -5px;
+  position: fixed;
+  left: 50px;
+  z-index: 1002;
+  top: 500px;
+  width: 55px;
+  height: 55px;
+  cursor: pointer;
+}
+.comp_dialog_imgview_next {
+  background-position: -102px -4px;
+  position: fixed;
+  z-index: 1002;
+  top: 500px;
+  right: 50px;
+  width: 55px;
+  height: 55px;
+  cursor: pointer;
+}
+.comp_dialog_imgview_close {
+  background-position: -65px -15px;
+  position: fixed;
+  top: 20px;
+  z-index: 1002;
+  right: 20px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+.comp_dialog_box .ajax-error {
+  position: absolute;
+  bottom: 40px;
+  color: #ea1616;
+}
+2013-6-21
+a.ui_btn {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  font-family: 'microsoft yahei';
+  font-size: 14px;
+  vertical-align: top;
+}
+a.ui_btn span {
+  vertical-align: top;
+}
+a.ui_btn .big_normal_btn,
+a.ui_btn .big_disable_btn,
+a.ui_btn .big_default_btn,
+a.ui_btn .small_normal_btn,
+a.ui_btn .small_disable_btn,
+a.ui_btn .small_default_btn {
+  display: inline-block;
+  background: url("../images/dialog/sf_button.png") no-repeat;
+  padding-left: 20px;
+  cursor: pointer;
+}
+a.ui_btn .big_normal_btn,
+a.ui_btn .big_default_btn,
+a.ui_btn .big_disable_btn {
+  height: 38px;
+  line-height: 38px;
+  overflow: hidden;
+}
+a.ui_btn .small_normal_btn,
+a.ui_btn .small_default_btn,
+a.ui_btn .small_disable_btn {
+  height: 30px;
+  line-height: 30px;
+}
+a.ui_btn .big_default_btn {
+  background-position: left -94px;
+}
+a.ui_btn .big_disable_btn,
+a.ui_btn .small_disable_btn {
+  color: #d5d5d5;
+  cursor: default;
+}
+a.ui_btn .big_disable_btn {
+  background-position: left -374px;
+}
+a.ui_btn .small_disable_btn {
+  background-position: left -758px;
+}
+a.ui_btn .small_normal_btn {
+  background-position: left -476px;
+}
+a.ui_btn .small_default_btn {
+  background-position: left -546px;
+}
+a.ui_btn .big_normal_btn span,
+a.ui_btn .big_default_btn span,
+a.ui_btn .small_normal_btn span,
+a.ui_btn .big_disable_btn span,
+a.ui_btn .small_default_btn span,
+a.ui_btn .small_disable_btn span {
+  background: url("../images/dialog/sf_button.png") no-repeat;
+  display: inline-block;
+  padding-right: 20px;
+  cursor: pointer;
+  overflow: hidden;
+}
+a.ui_btn .big_normal_btn span,
+a.ui_btn .small_normal_btn span {
+  color: #fff;
+}
+a.ui_btn .big_default_btn span,
+a.ui_btn .small_default_btn span {
+  color: #303030;
+}
+a.ui_btn .small_normal_btn span,
+a.ui_btn .small_default_btn span,
+a.ui_btn .small_disable_btn span {
+  font-size: 12px;
+}
+a.ui_btn .big_disable_btn span,
+a.ui_btn .small_disable_btn span {
+  cursor: default;
+}
+a.ui_btn .big_normal_btn span,
+a.ui_btn .big_default_btn span,
+a.ui_btn .big_disable_btn span {
+  min-width: 60px;
+  text-align: center;
+}
+a.ui_btn .big_normal_btn span {
+  background-position: right -47px;
+}
+a.ui_btn .big_default_btn span {
+  background-position: right -141px;
+}
+a.ui_btn .big_disable_btn span {
+  background-position: right -421px;
+}
+a.ui_btn .small_normal_btn span {
+  background-position: right -511px;
+}
+a.ui_btn .small_default_btn span {
+  background-position: right -581px;
+}
+a.ui_btn .small_disable_btn span {
+  background-position: right -794px;
+}
+a.ui_btn .small_normal_btn:hover {
+  background-position: left -616px;
+}
+a.ui_btn .small_default_btn:hover {
+  background-position: left -687px;
+}
+a.ui_btn .big_normal_btn:hover {
+  background-position: left -187px;
+}
+a.ui_btn .big_default_btn:hover {
+  background-position: left -280px;
+}
+a.ui_btn .big_normal_btn:hover span {
+  background-position: right -233px;
+}
+a.ui_btn .big_default_btn:hover span {
+  background-position: right -327px;
+}
+a.ui_btn .small_normal_btn:hover span {
+  background-position: right -652px;
+}
+a.ui_btn .small_default_btn:hover span {
+  background-position: right -722px;
+}

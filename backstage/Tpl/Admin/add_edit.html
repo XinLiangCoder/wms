@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>添加、编辑管理员-{$site.SITE_INFO.name}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='管理员管理 > 添加、编辑管理员';
+        </php>
+    <include file="Common:intoHead" />
+</head>
+<body>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current">添加编辑管理员</div>
+                        <div class="current" style="float:right;"><a href="__URL__/index">管理员列表</a></div>
+                    </div>
+                    <form action="" method="post">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="120">账号：</th>
+                                <td><input <if condition="ACTION_NAME eq 'edit'"> disabled="disabled"</if> name="username" type="text" class="input" size="40" value="{$info.username}" /></td>
+                            </tr>
+                            <tr>
+                                <th>密码：</th>
+                                <td><input <if condition="ACTION_NAME eq 'edit'"> placeholder="不填写不会修改原密码"</if> class="input" name="password" type="password" size="40" value="" /></td>
+                            </tr>
+                            <tr>
+                                <th>状态：</th>
+                                <td>
+                                    <select name="status" style="width: 80px;">
+                                        <option value="1" <if condition="$info.status eq 1"> selected </if>>启用</option>
+                                        <option value="2" <if condition="$info.status eq 2"> selected </if>>禁用</option>
+                                    </select>
+                                    如果禁用了将无法登陆本系统</td>
+                            </tr>
+                            <tr>
+                                <th>所属用户组</th>
+                                <td><select name="role_id" style="min-width: 80px;">{$info.roleOption}</select></td>
+                            </tr>
+                            <tr>
+                                <th>备注：</th>
+                                <td><textarea name="note" rows="5" cols="57">{$info.note}</textarea></td>
+                            </tr>
+                        </table>
+                        <input type="hidden" name="id" value="{$info.id}"/>
+                        <input type="hidden" name="v" value="{$info.id|Params_Encry}"/>
+                    </form>
+                    <div class="commonBtnArea">
+                        <button class="btn submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+    $(".submit").click(function(){
+		if($.trim($("input[name='username']").val())==''){
+            popup.alert("账号不能为空");
+            return false;
+        }
+		<if condition="ACTION_NAME eq 'add'">
+        if($.trim($("input[name='password']").val())==''){
+            popup.alert("密码不能为空");
+            return false;
+        }
+        </if>
+        commonAjaxSubmit();
+    });
+</script>
+</body>
+</html>

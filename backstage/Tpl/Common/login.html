@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>登录-{$site.SITE_INFO.name}</title>
+        <base href="{$site.WEB_ROOT}"/>
+        <link rel="shortcut icon" href="{$site.WEB_ROOT}Public/favicon.ico"/>
+		<link rel="bookmark" href="{$site.WEB_ROOT}Public/favicon.ico"/>
+    <css href="{$site.WEB_ROOT}Public/Min/?f=Public/Css/base.css|__PUBLIC__/Js/asyncbox/skins/default.css"/>
+    <js href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Js/jquery-1.9.0.min.js|__PUBLIC__/Js/functions.js|__PUBLIC__/Js/jquery.form.js|__PUBLIC__/Js/asyncbox/asyncbox.js"/>
+</head>
+
+<body class="loginWeb">
+    <div class="loginBox">
+        <div class="innerBox">
+            <div class="logo"> <img src="{$site.WEB_ROOT}Public/Img/logo.gif" /></div>
+            <form id="form1" action="" method="post">
+                <div class="loginInfo">
+                    <ul>
+                        <li class="row1">登录账号：</li>
+                        <li class="row2"><input class="input" name="username" id="username" size="30" type="text" /></li>
+                    </ul>
+                    <ul>
+                        <li class="row1">登录密码：</li>
+                        <li class="row2"><input class="input" name="password" id="password" size="30" type="password" /></li>
+                    </ul>
+                    <ul>
+                        <li class="row1">验证码：</li>
+                        <li class="row2"><input class="input" id="verify_code" name="verify_code" type="text" style="width:100px;" /> <img src="{$site.WEB_ROOT}index.php/Public/verifycode"  title="看不清？单击此处刷新" onclick="this.src+='?rand='+Math.random();"  style="cursor: pointer; vertical-align: middle;"/></li>
+                    </ul>
+                </div>
+            </form>
+            <div class="clear"></div>
+            <div class="operation"><button class="btn submit">登录</button></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function(){
+            $(".submit").click(function(){
+                if($("#username").val()==''||$("#password").val()==''||$("#verify_code").val()==''){
+                    popup.alert("您输入的数据不完整");
+                    return false;
+                }
+                commonAjaxSubmit();
+            })
+        });
+        $(document).keypress(function(e) {  
+	        	//回车键事件  
+	           if(e.which == 13) { jQuery(".submit").click(); }  
+	    });
+    </script>
+</body>
+</html>

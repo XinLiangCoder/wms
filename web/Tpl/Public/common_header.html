@@ -1,0 +1,53 @@
+
+</head>
+<body>
+<if condition="$weixin neq '1'">
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">WMS</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+          </ul>
+          <eq name="username" value="">
+          	  <form action="#" method="post" class="navbar-form navbar-right" role="form">
+	            <div class="form-group">
+	              <input type="text" name="email" placeholder="Email" class="form-control">
+	            </div>
+	            <div class="form-group">
+	              <input type="password" name="password" placeholder="Password" class="form-control">
+	            </div>
+	            
+	             <if condition="$device neq '2'" >
+	             	<input type="hidden" name="type" value="header" />
+	            	<input type="hidden" name="v" value="{:Params_Encry('header')}" />
+				 <else />
+					<input type="hidden" name="form" value="2" />
+					<input type="hidden" name="v" value="{:Params_Encry('2')}" />
+	             </if>
+	             <button type="button" class="btn btn-success">登录</button>
+	          </form>
+	      <else/>
+           <div class="navbar-form navbar-right" style="margin-bottom:0px;margin-top:4px;">
+            <a href="#" class="list-group-item">
+              <span class="glyphicon glyphicon-off"></span>
+            </a>
+           </div>
+           <div class="navbar-form navbar-right" style="margin-bottom:0px;margin-top:4px;">
+            <a href="#" class="list-group-item">
+              <span class="glyphicon glyphicon-user"></span>&nbsp;<span class="badge">0</span>
+            </a>
+           </div>
+	      </eq>
+        </div>
+        
+      </div>
+     </div>
+</if>

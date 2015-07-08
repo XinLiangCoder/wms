@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>广告管理-{$site.SITE_INFO.name}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='广告管理 > 广告列表';
+        </php>
+        <include file="Common:intoHead" />
+    </head>
+    <body>
+        <div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">广告列表</div>
+                        <div class="current" style="float:right;"><a href="__URL__/add">添加广告</a></div>
+                    </div>
+                    
+                    <div>
+					<form name="search" action="" method="get">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+					<tr>
+					<td>
+						<select name="s_type">
+							<option value="1" <if condition="$s['s_type'] == 1">selected="selected"</if>>名称</option>
+							<option value="2" <if condition="$s['s_type'] == 2">selected="selected"</if>>标识</option>
+						</select>
+						<input type="text" class="input" name="s_key" size="20" value="{$s.s_key}">
+					</td>
+					<td>
+						平台：
+						<select name="s_platform">
+							<option value="0">请选择</option>
+                            <volist name="ad_fltype" id="v" key="k">
+                             	<option <if condition="$s.s_platform eq $key"> selected </if> value="{$key}">{$v}</option>
+                            </volist>
+                        </select>
+					</td>
+					<td>
+						有效期：
+						<select name="s_time_limit">
+							<option value="0">请选择</option>
+                            <option <if condition="$s.s_time_limit eq 1"> selected </if> value="1">永不过期</option>
+                            <option <if condition="$s.s_time_limit eq 2"> selected </if> value="2">时间限制</option>
+                        </select>
+					</td>
+					<td>
+						状态：
+						<select name="s_status">
+							<option value="0">请选择</option>
+                            <option <if condition="$s.s_status eq 1"> selected </if> value="1">启用</option>
+                            <option <if condition="$s.s_status eq 2"> selected </if> value="2">禁用</option>
+                        </select>
+					</td>
+					<td>
+						<select name="s_time_type">
+							<option value="1" <if condition="$s['s_time_type'] == 1">selected="selected"</if>>创建时间</option>
+							<option value="2" <if condition="$s['s_time_type'] == 2">selected="selected"</if>>更新时间</option>
+						</select>
+						<input type="text" class="input" name="s_start_time" id="s_start_time" size="11" value="{$s.s_start_time}" /> 到 
+                        <input type="text" class="input" name="s_end_time" id="s_end_time" size="11" value="{$s.s_end_time}" />
+					</td>
+					<td><input type="submit" name="sub" class="btn" value="查询"></td>
+					</tr>
+					</table>
+					</form>
+					</div>
+                    <form id="_Table" action="" method="post">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                        <thead>
+                            <tr>
+                            	<td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                                <td>编号</td>
+                                <td>名称</td>
+                                <td>标识</td>
+                                <td>平台</td>
+                                <td>有限期</td>
+                                <td>状态</td>
+                                <td>更新时间</td>
+                                <td>创建时间</td>
+                                <td width="150">操作</td>
+                            </tr>
+                        </thead>
+                        <volist name="list" id="vo">
+                            <tr align="center" id="{$vo.id}">
+                            	<td><input type="checkbox" name="ids[]" value="{$vo.id}"/></td>
+                                <td>{$vo.id}</td>
+                                <td>{$vo.name|SetDefaultValue}</td>
+                                <td>{$vo.mark|SetDefaultValue}</td>
+                                <td>
+                               		<volist name="ad_fltype" id="v" key="k">
+		                             	<if condition="$vo.platform eq $key"> {$v} </if>
+		                            </volist>
+			                    </td>
+                                <td>
+                                	<if condition="$vo.time_limit eq '1' ">
+                                		永不过期
+	                                <elseif condition="$vo.time_limit eq '2'"  />
+	                                	时间限制
+	                                </if>
+                                </td>
+								<td>
+								<if condition="$vo.status eq '1' ">
+                                	<span style="color:#090">启用</span>
+                                <elseif condition="$vo.status eq '2'"  />
+                                	<span style="color:#F00">禁用</span>
+                                </if>
+                                </td>
+                                <td>
+                                	<if condition="$vo.update_time neq '0'">
+                                	{$vo.update_time|date='Y-m-d H:i:s',###}
+                                	<else />
+                                	--
+                                	</if>
+                                </td>
+                                <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                                <td>
+                                	[ <a href="__URL__/edit/id/{$vo.id}/v/{$vo.id|Params_Encry}">编辑</a> ]
+                                	<if condition="$vo.status eq '1'">
+                                	[ <a class="update" href="javascript:void(0)" link="__URL__/status/id/{$vo.id}/s/2/v/{$vo.id|Params_Encry}">禁用</a> ]
+                                	<elseif condition="$vo.status eq '2'" />
+                                	[ <a class="update" href="javascript:void(0)" link="__URL__/status/id/{$vo.id}/s/1/v/{$vo.id|Params_Encry}">启用</a> ]
+                                	</if>
+                                	[ <a href="__URL__/details/id/{$vo.id}/v/{$vo.id|Params_Encry}">详情</a> ]
+                                </td>
+                            </tr>
+                        </volist>
+                    </table>
+                    </form>
+                    <div class="commonBtnArea" >
+                    	<button class="btn submit">删除所选</button>
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <include file="Common:foot" />
+        <css href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Js/poshytip/tip-yellow/tip-yellow.css|__PUBLIC__/Js/poshytip/tip-yellowsimple/tip-yellowsimple.css|__PUBLIC__/datepicker/datepicker.css"/>
+        <js href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Js/jquery-1.7.2.min.js|__PUBLIC__/Js/jquery.lazyload.js|__PUBLIC__/Js/functions.js|/Js/base.js|__PUBLIC__/Js/jquery.form.js|__PUBLIC__/Js/asyncbox/asyncbox.js|__PUBLIC__/Js/poshytip/jquery.poshytip.min.js|__PUBLIC__/datepicker/datepicker.js"/>
+        <script type="text/javascript">
+			$(function(){
+				$("#s_start_time").DatePicker({
+					format:'Y-m-d',
+					date: $("#s_start_time").val(),
+					starts: 1,
+					position: 'bottom',
+					enablePast:true,
+					onBeforeShow: function(){
+					},
+					onChange: function(formated,dates){
+							$("#s_start_time").val(formated);
+					}
+				});
+				$("#s_end_time").DatePicker({
+					format:'Y-m-d',
+					date: $("#s_end_time").val(),
+					starts: 1,
+					position: 'bottom',
+					enablePast:true,
+					onBeforeShow: function(){
+					},
+					onChange: function(formated,dates){
+							$("#s_end_time").val(formated);
+					}
+				});
+				$(".update").click(function(){
+					var _URL = $(this).attr("link");
+					popup.confirm('你确定要执行吗？','温馨提示',function(action){
+						if(action == 'ok'){
+							$.get(_URL,function(_DATA){
+								if(_DATA.status == 1){
+									popup.alert(_DATA.msg);
+									setTimeout("location.reload()",1000);
+								}else{
+									popup.alert(_DATA.msg);
+									setTimeout("location.reload()",1000);
+								}
+							},"json");
+						}
+					});
+					return false;
+				});
+				/** 全选 OR 反选 **/
+				clickCheckbox();  
+				$(".submit").click(function(){
+					if($("tbody input[type='checkbox']:checked").size()==0){
+		                popup.alert("请先选择你要删除的数据");
+		                return false;
+		            }else{
+		            	popup.confirm('你确定要删除吗？','温馨提示',function(action){
+		            		if(action == 'ok'){
+		            			if($(".submit").attr("disabledSubmit")){
+		                            popup.alert("已提交，系统在处理中...");
+		                        }else{
+		                            $(".submit").attr("disabledSubmit",true).html("处理中...");
+		                            commonAjaxSubmit("__URL__/del","#_Table");
+		                            //popup.alert("系统处理中，如果删除较多可能需要较长时间，请稍候....");
+		                            setTimeout(function(){
+		                                popup.close("asyncbox_alert");
+		                            },2000);
+		                        }
+			            	}
+			            });
+			        }
+				});
+			})
+		</script>
+    </body>
+</html>

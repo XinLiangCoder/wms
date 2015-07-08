@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>添加配置-{$site.SITE_INFO.name}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='配置管理 > 添加配置';
+        </php>
+    <include file="Common:intoHead" />
+<script>
+ $(function() {
+	 /** Display none OR SHOW Function **/
+	 function _SHOWHIDDEN(_radio_id){
+		 if(_radio_id=='2'){
+			$("#upload").css("display", "none");
+		 }else{
+			$("#upload").show();
+		 }
+	 }
+	 /** Change **/
+	  $(".file_radio").change(function(){
+		  _SHOWHIDDEN($('input[name="file"]:checked').val());
+	  });
+ });
+ </script>
+</head>
+<body>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current">添加配置</div>
+                        <div class="current" style="float:right;"><a href="__URL__/index">配置列表</a></div>
+                    </div>
+                    <form action="" method="post">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                            	<th width="120">配置类型：</th>
+                            	<td>
+                            		<select id="type_select" name="type">
+                            			<option value="0">请选择</option>
+                                		<volist name="item" id="v" key="k">
+                                			<option value="{$key}">{$v}</option>
+                                		</volist>
+                                    </select>
+                                    <span style="margin-left:20px;">
+                                		必填
+                                	</span>
+                            	</td>
+                            </tr>
+                            <tr>
+                                <th>字段名称：</th>
+                                <td><input name="field_name" type="text" class="input" size="40" />
+                                	<span style="margin-left:20px;">
+                                		例子：web_name
+                                	</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>字段描述：</th>
+                                <td><input name="field_desc" type="text" class="input" size="40" />
+                                	<span style="margin-left:20px;">
+                                		例子：网站名称
+                                	</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>字段内容：</th>
+                                <td><input id="field_value" name="field_value" type="text" class="input" size="40" />
+                                	<span style="margin-left:20px;">
+                                		<label><input class="file_radio" type="radio" value="1" name="file" />上传类型</label>
+                                		<label><input class="file_radio" type="radio" value="2" name="file" checked="checked" />录入类型</label>
+                                	</span>
+                                	<span style="margin-left:20px;">
+                                		例子：XXX官方网站
+                                	</span>
+                                </td>
+                            </tr>
+                            <tr id="upload" style="display:none;">
+                                <th>上传文件：</th>
+                                <td>
+                                	<div id="fileQueue"></div>
+									<input id="file_upload" type="file" />
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div class="commonBtnArea">
+                        <button class="btn submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+<css href="{$site.WEB_ROOT}__PUBLIC__/Uploadify/css/uploadify.css"/>
+<js href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Uploadify/scripts/swfobject.js|__PUBLIC__/Uploadify/scripts/jquery.uploadify.v2.1.0.js"/>
+<script type="text/javascript">
+$(function() {
+	/** File_Upload @author lxl **/
+	var _Settings = {
+		"uploader" : "__PUBLIC__/Uploadify/scripts/uploadify.swf",
+        "cancelImg" : "__PUBLIC__/Uploadify/cancel.png",
+        "script" : "{:U('Public/Upload_File',array('t'=>'config_atta'))}",
+		"fileQueue":"fileQueue",
+		"auto" : true,
+		"multi" : true,
+		"queueSizeLimit" : 1,
+		"onComplete" : _addfile,
+		"fileExt" : "*.jpg;*.jpeg;*.gif;*.png;*.apk;*.pdf;*.docx;*.xlsx",
+		"fileDesc" : "*.jpg;*.jpeg;*.gif;*.png;*.apk;*.pdf;*.docx;*.xlsx",
+	};
+	$('#file_upload').uploadify(_Settings);
+	/** Add file @author lxl **/
+    function _addfile(event, ID, fileObj, response, data){
+    	var val = $.parseJSON(response);
+    	if(val.err=='1'){
+    		popup.alert(val.message);
+        }else{
+            var _URL = "__Config_Atta__"+val.url
+            $("#field_value").val(_URL);
+        }
+    }
+})
+    $(".submit").click(function(){
+    	if($("#type_select").val()=='0'){
+            popup.alert("配置类型不能为空");
+            return false;
+        }
+		if($.trim($("input[name='field_name']").val())==''){
+            popup.alert("字段名称不能为空");
+            return false;
+        }
+        if($.trim($("input[name='field_desc']").val())==''){
+            popup.alert("字段描述不能为空");
+            return false;
+        }
+        if($.trim($("input[name='field_value']").val())==''){
+            popup.alert("字段内容不能为空");
+            return false;
+        }
+        commonAjaxSubmit();
+    });
+</script>
+</body>
+</html>

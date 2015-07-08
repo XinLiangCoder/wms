@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>添加、编辑资讯-{$site.SITE_INFO.name}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='资讯管理 > 添加、编辑资讯';
+        </php>
+        <include file="Common:intoHead" />
+	<script>
+	$(function() {
+	  $(".cat").change(function(){
+	   var cat=$(this).val();
+	   $.post("__URL__/getSubCat",{
+		fid:cat,
+	   },function(json){
+		var data=json;//;
+
+		$(".subcat").empty();
+		if(data.data.length){
+			$(".subcat").append("<select name=\"category_id\" class=\"subcat\">");
+			for(var i=0;i<data.data.length;i++){
+				$(".subcat").append("<option value="+data.data[i].id+">"+data.data[i].name+"</option>");
+			}
+			$(".subcat").append("</select>");
+		}
+	   });
+	  });
+	 });
+ </script>
+    </head>
+    <body>
+        <div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">添加编辑资讯</div>
+                        <div class="current" style="float:right;"><a href="__URL__/index">资讯管理</a></div>
+                    </div>
+                    <form action="" method="post">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="100">文章标题：</th>
+                                <td><input id="title" type="text" class="input" size="60" name="title" value="{$info.title}"/> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>所属分类：</th>
+                                <td>
+                                    <select name="parent_category_id" class='cat'>
+									<option value="0">请选择分类</option>
+                                        <volist name="list" id="vo">
+                                             <option <if condition="$vo['id'] eq $info['parent_category_id']"> selected="selected" </if> value="{$vo.id}">{$vo['name']}</option>
+                                        </volist>
+                                    </select>
+									<span class="subcat">
+										<if condition="$son_list neq NULL"> 
+											<select name="category_id">
+												<volist name="son_list" id="son_v">
+		                                             <option <if condition="$son_v['id'] eq $info['category_id']"> selected="selected" </if> value="{$son_v.id}">{$son_v['name']}</option>
+		                                        </volist>
+											</select>
+										</if>
+									</span>
+									</td>
+                            </tr>
+                            <tr>
+                                <th>文章内容：</th>
+                                <td><textarea id="content" class="input" style="height: 350px; width: 100%;" name="content">{$info.content}</textarea></td>
+                            </tr>
+                            <tr>
+                                <th width="100">发布时间：</th>
+                                <td><input type="text" class="input" name="publish_time" id="publish_time" size="30" <if condition="$info.publish_time neq '0' and  $info.publish_time neq ''"> value="{$info.publish_time|date='Y-m-d H:i:s',###}" </if> /></td>
+                            </tr>
+                            <tr>
+                                <th width="100">状态：</th>
+                                <td>
+                                	<select name="status">
+                                		<option value="1" <if condition="$info.status eq '1'"> selected </if> >启用</option>
+                                		<option value="2" <if condition="$info.status eq '2'"> selected </if> >禁用</option>
+                                	</select>
+                                </td>
+                            </tr>
+                        </table>
+                        <input type="hidden" name="id" value="{$info.id}" />
+                        <input type="hidden" name="v" value="{$info.id|Params_Encry}" />
+                    </form>
+                    <div class="commonBtnArea" >
+                        <button class="btn submit">提交</button>
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <include file="Common:foot" />
+        <css href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Js/poshytip/tip-yellow/tip-yellow.css|__PUBLIC__/Js/poshytip/tip-yellowsimple/tip-yellowsimple.css|__PUBLIC__/datepicker/datepicker.css"/>
+        <js href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Js/jquery-1.7.2.min.js|__PUBLIC__/Js/jquery.lazyload.js|__PUBLIC__/Js/functions.js|/Js/base.js|__PUBLIC__/Js/jquery.form.js|__PUBLIC__/Js/asyncbox/asyncbox.js|__PUBLIC__/Js/poshytip/jquery.poshytip.min.js|__PUBLIC__/datepicker/datepicker.js"/>
+        <js href="__PUBLIC__/kindeditor/kindeditor.js,__PUBLIC__/kindeditor/lang/zh_CN.js,__PUBLIC__/My97DatePicker/WdatePicker.js"/>
+        <script type="text/javascript">
+            $(function(){
+                var  content ;
+                KindEditor.ready(function(K) {
+                    content = K.create('#content');
+                });
+                $("#publish_time").DatePicker({
+					format:'Y-m-d',
+					date: $("#publish_time").val(),
+					starts: 1,
+					position: 'bottom',
+					enablePast:true,
+					onBeforeShow: function(){
+					},
+					onChange: function(formated,dates){
+							$("#publish_time").val(formated);
+					}
+				});
+                $(".submit").click(function(){
+                	if($.trim($("input[name='title']").val())==''){
+                        popup.alert("标题不能为空");
+                        return false;
+                    }
+                	content.sync();
+                    commonAjaxSubmit();
+                });
+            });
+            
+        </script>
+    </body>
+</html>

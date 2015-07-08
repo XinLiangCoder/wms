@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>日志管理-{$site.SITE_INFO.name}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='日志管理 > 日志列表';
+        </php>
+        <include file="Common:intoHead" />
+    </head>
+    <body>
+        <div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">日志管理</div>
+                    </div>
+					<div>
+					<form name="search" action="" method="get">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+					<tr>
+					<td>账号：
+						<select name="admin_id" class="users">
+							<option value="0">请选择账号</option>
+							<volist name="users" id="s">
+								<option <if condition="$s['id'] == $par['admin_id']">selected="selected"</if> value="{$s.id}">{$s.username}</option>
+							</volist>
+						</select>
+					</td>
+					<td>操作关键字：<input type="text" class="input" name="skey" size="30" value="{$par.skey}"></td>
+					<td><input type="submit" name="sub" class="btn" value="查询"></td>
+					</tr>
+					</table>
+					</form>
+					</div>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                        <thead>
+                            <tr>
+                                <td>ID</td>
+								<td>模块</td>
+                                <td>动作</td>
+                                <td>用户</td>
+                                <td>所在组</td>
+								<td>操作记录</td>
+                                <td>发布时间</td> 
+                            </tr>
+                        </thead>
+                        <volist name="list" id="vo">
+                            <tr align="center" id="{$vo.id}">
+                                <td>{$vo.id}</td>
+								<td>{$vo.model}</td>
+                                <td>{$vo.action}</td>
+                                <td>{$vo.admin_name}</td>
+                                <td>{$vo.role_name}</td>
+								<td>{$vo.bak}</td>
+                                <td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+                            </tr>
+                        </volist>
+						
+                    </table>
+					<div class="commonBtnArea" >
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <include file="Common:foot" />
+    </body>
+</html>

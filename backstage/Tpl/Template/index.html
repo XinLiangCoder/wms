@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>模板管理-{$site.SITE_INFO.name}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='模板管理 > 模板列表';
+        </php>
+        <include file="Common:intoHead" />
+    </head>
+    <body>
+        <div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">模板列表</div>
+                    </div>
+                    <div>
+                    	<span><button id="updir" url="{:U('Template/index',array('dir'=>$UpDir))}" onclick="returnUp()" class="btn">返回上级</button></span>
+                    	<span><b>当前目录：</b>/{$NowDir}</span>
+                    	<span style="float:right"><input id="file_upload" type="file" name="imgname" /></span>
+                    	<span style="float:right"><button class="btn mkdir" >创建目录</button></span>
+                    </div>
+                    <form>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                        <thead>
+                            <tr>
+                                <td>文件夹/文件名</td>
+                                <td>文件类型</td>
+                                <td>文件权限</td>
+                                <td>文件大小</td>
+                                <td>修改时间</td>
+                                <td width="200">操作</td>
+                            </tr>
+                        </thead>
+                        <volist name="list" id="vo"> 
+					    <tr>
+							<td>
+							<img src="{:GetIco($vo[filename])}" /> 
+							<span class="filename_{$i}" rename="0">{$vo.filename}</span>
+							</td>
+							<td align="center">{$vo.type}</td> 
+							<td align="center"><if condition='$vo.is_readable eq 1'>
+								<span style="color:green">可读</span>
+								<else/>
+								<span style="color:red">不可读</span>
+								</if>
+								<if condition='$vo.is_writeable eq 1'>
+								<span style="color:green;margin-left:10px;">可写</span>
+								<else/>
+								<span style="color:red;margin-left:10px;">不可写</span>
+								</if>
+							</td>
+							<td>{$vo.filesize}</td>
+					    	<td align="center">{$vo.mtime|date='Y-m-d H:i:s',###}</td>
+							<td align="center">
+								<eq name="vo.type" value="dir">
+								[<a href="{:U('Template/index',array('dir'=>$vo['nowdir'],'secondDir'=>$vo['filename']))}">浏览</a>]&nbsp;&nbsp;&nbsp;
+								<else />
+								[<a target="_blank" href="{:U('Template/downFile',array('filedir'=>$vo['nowdir'],'filename'=>$vo['filename'],'type'=>$vo['ext']))}">下载</a>]
+								&nbsp;&nbsp;
+								</eq> 
+								<if condition='($vo.ext eq "html") OR ($vo.ext eq "css") OR ($vo.ext eq "js")'>
+								[<a href="{:U('Template/edit',array('filedir'=>$vo['nowdir'],'filename'=>$vo['filename'],'type'=>$vo['ext']))}">编辑</a>]
+								&nbsp;&nbsp;
+								</if>
+								[<a _id="{$i}" dir="{$vo.nowdir}" class="rename_{$i}" href="javascript:void(0);">重命名</a>]
+								&nbsp;&nbsp;
+								[<a url="{:U('Template/delFile',array('filedir'=>$vo['nowdir'],'filename'=>$vo['filename'],'type'=>$vo['ext']))}" class="del" type="{$vo.ext}"  href="javascript:void(0);">删除</a>]
+							</td>
+					    </tr>
+						</volist>
+						<input type="hidden" name="dirname" id="dirname" />
+						<input type="hidden" name="filedir" value="{$NowDir}"/>
+                        <input type="hidden" name="filedir_v" value="{$NowDir|Params_Encry}"/>
+                    </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <css href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Uploadify/css/uploadify.css"/>
+		<js href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Uploadify/scripts/swfobject.js|__PUBLIC__/Uploadify/scripts/jquery.uploadify.v2.1.0.js"/>
+        <include file="Common:foot" />
+        <script type="text/javascript">
+			$(function(){
+				/** File_Upload @author lxl **/
+				$('#file_upload').uploadify({  
+		        	"uploader" : "__PUBLIC__/Uploadify/scripts/uploadify.swf",
+		            "cancelImg" : "__PUBLIC__/Uploadify/cancel.png",
+		            "script" : "{:U('Public/Upload_File',array('t'=>'template','p'=>$path))}",
+					"fileQueue":"fileQueue",
+					"auto" : true,
+					"multi" : true,
+					"queueSizeLimit" : 5,
+					"onComplete" : _RefreshPage,
+					"fileExt" : "*.jpg;*.jpeg;*.gif;*.png",
+					"fileDesc" : "*.jpg;*.jpeg;*.gif;*.png",
+		        });
+				/** DEL  **/
+				$(".del").click(function(){
+					var _URL = $(this).attr("url");
+					popup.confirm('你确定要删除吗？','温馨提示',function(action){
+						if(action == 'ok'){
+							$.get(_URL,function(_DATA){
+								if(_DATA.status == 1){
+									/** SUCCESS **/
+									popup.success(_DATA.info);
+									location.reload();
+								}else{
+									/** ERROR **/
+									popup.error(_DATA.info);
+								}
+							},"json");
+						}
+					});
+					return false;
+				});
+				/** RENAME **/
+				$("a[class^=rename]").each(function(index,ele) {
+					$(this).click(function(){
+						var _id = $(this).attr("_id");
+						var nowdir = $(this).attr("dir");
+						var filename = $(".filename_"+_id).html();
+						if($(".filename_"+_id).attr('rename')==0){
+							$(".filename_"+_id).attr('rename','1').html("<input class='input' size='20' id='rename_"+_id+"' value='"+filename+"' />").find("input").select();
+						}
+						$("#rename_"+_id).focus().bind("blur",function(){
+	                        var renameval = $(this).val();
+	                        $(".filename_"+_id).html(renameval).attr('rename','0');
+	                        if(filename!=renameval){
+	                            $.post("__URL__/reName",{oldname:filename,newname:renameval,dir:nowdir},function(data){
+									if(data && data.status=='0'){
+										/** ERROR **/
+										popup.error(data.info);
+									}else{
+										/** SUCCESS **/
+										//popup.success(data.info);
+										location.reload();
+									};
+								},"json");
+	                        }
+	                    })
+					});
+				});
+				/** Create Dir **/
+				$(".mkdir").click(function(){
+                    popup.open({id:"ifrmkdir", url : "__URL__/mkdir", width : 400, height : 90, buttons : [{ value : '创建目录',result : 'submit'},{ value : '取消',result : 'cancel'}],callback : function(btnRes,cntWin,reVal){
+                            if(btnRes == "submit"){
+                                var dirname=cntWin.getDirName();
+                                /** 只能输入数字、字母、下划线 **/
+                                var Reg =/^[a-zA-Z0-9_]{1,}$/;
+                                if (Reg.test(dirname)) {
+                                    $("#dirname").val(dirname);
+                                    $("form").ajaxSubmit({url:"__URL__/mkdir",type:"POST",success:function(json, st) {
+                                           if(json.status==1){
+                                               /** SUCCESS **/
+                                        	   popup.success(json.info);
+                                               popup.close("asyncbox_alert");
+                                               location.reload();
+                                           }else{
+                                               /** ERROR **/
+                                               popup.error(json.info);
+                                           }
+                                        }
+                                    });
+                                    popup.close("ifrmkdir");
+                                }else{
+                                    popup.error("只能输入数字、字母、下划线");
+                                }
+                                return false;
+                            }
+                        }
+                    });
+                    return false;
+                });
+				/** _RefreshPage **/
+				function _RefreshPage(event, ID, fileObj, response, data){
+			    	var val = $.parseJSON(response);
+			    	if(val.err=='1'){
+				    	/** ERROR **/
+			    		popup.error(val.message);
+			        }else{
+				        /** SUCCESS **/
+			        	location.reload();
+				    }
+				}
+			})
+			/** returnUp **/
+			function returnUp(){
+				var url = $("#updir").attr("url");
+				window.open(url,'_self');
+			}
+		</script>
+    </body>
+</html>

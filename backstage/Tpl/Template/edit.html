@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>编辑文件-{$site.SITE_INFO.name}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='文件管理 > 编辑文件';
+        </php>
+    <include file="Common:intoHead" />
+</head>
+<body>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current">编辑文件</div>
+                        <div class="current" style="float:right;"><a href="__URL__/index">文件列表</a></div>
+                    </div>
+                    <form action="" method="post">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th></th>
+                                <td><textarea style="width:100%;height:100%;" name="content" rows="34" cols="195">{$info.content}</textarea></td>
+                            </tr>
+                        </table>
+                        <input type="hidden" name="filename" value="{$info.filename}"/>
+                        <input type="hidden" name="filename_v" value="{$info.filename|Params_Encry}"/>
+                        <input type="hidden" name="filedir" value="{$info.filedir}"/>
+                        <input type="hidden" name="filedir_v" value="{$info.filedir|Params_Encry}"/>
+                        <input type="hidden" name="type" value="{$info.type}"/>
+                        <input type="hidden" name="type_v" value="{$info.type|Params_Encry}"/>
+                    </form>
+                    <div class="commonBtnArea">
+                        <button class="btn submit">提交</button>
+                        <button class="btn return">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+<script>
+$(".submit").click(function(){
+    commonAjaxSubmit();
+});
+$(".return").click(function(){
+	history.go(-1);
+});
+</script>
+</body>
+</html>

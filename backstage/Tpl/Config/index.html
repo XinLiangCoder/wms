@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>配置管理-{$site.SITE_INFO.name}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='配置管理 > 配置列表';
+        </php>
+        <include file="Common:intoHead" />
+    </head>
+    <body>
+        <div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">配置列表</div>
+                        <div class="current" style="float:right;"><a href="__URL__/add">添加配置</a></div>
+                    </div>
+                    <div>
+                    <form name="search" action="" method="get">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+					<tr>
+					<td>
+						请选择：<select id='config_type' name="type">
+							<volist name="item" id="v" key="k">
+                          		<option <if condition="$type eq $key"> selected </if> value="{$key}">{$v}</option>
+                            </volist>
+						</select>
+					</td>
+					<td><input type="submit" name="sub" class="btn" value="查询"></td>
+					</tr>
+					</table>
+					</form>
+					</div>
+                    <form id="submit_modify" action="" method="post">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                        <volist name="list" id="vo">
+                         <tr>
+                             <th width="120">{$vo.field_desc}：</th>
+                             <td><input id="field_value_{$vo.id}" name="field_value[]" type="text" class="input" size="50" value="{$vo.field_value}" /></td>
+                             <td>
+                             <select name="type[]">
+								<volist name="item" id="v" key="k">
+	                          		<option <if condition="$vo[type] eq $key"> selected </if> value="{$key}">{$v}</option>
+	                            </volist>
+							</select>
+							</td>
+							<td>
+								<select name="atta_type[]">
+									<option <if condition="$vo[atta_type] eq 1"> selected </if> value="1">上传类型</option>
+									<option <if condition="$vo[atta_type] eq 2"> selected </if> value="2">录入类型</option>
+								</select>
+							</td>
+                             <td>参数名：{$vo.field_name}</td>
+                             <td>
+                             	<if condition="$vo.atta_type eq 1">
+                             		<input id="file_upload_{$vo.id}" type="file" url="/index.php/Public/Upload_File/t/config_atta/id/{$vo.id}" />
+                             	</if>
+                             </td>
+                             <input type="hidden" name="id[]" value="{$vo.id}"/>
+                             <input type="hidden" name="v[]" value="{$vo.id|Params_Encry}"/>
+                         </tr>
+                        </volist>
+                    </table>
+                    </form>
+                    <div class="commonBtnArea">
+                    	<button class="btn submit_1">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <include file="Common:foot" />
+<css href="{$site.WEB_ROOT}__PUBLIC__/Uploadify/css/uploadify.css"/>
+<js href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Uploadify/scripts/swfobject.js|__PUBLIC__/Uploadify/scripts/jquery.uploadify.v2.1.0.js"/>
+<script type="text/javascript">
+$(function() {
+	/** File_Upload @author lxl **/
+	$("input[id^=file_upload]").each(function(index,ele) {
+		$(this).uploadify({
+			"uploader" : "__PUBLIC__/Uploadify/scripts/uploadify.swf?var=" + new Date().getTime(),
+	        "cancelImg" : "__PUBLIC__/Uploadify/cancel.png",
+	        "script" : $(this).attr('url'),
+			"fileQueue":"fileQueue",
+			"auto" : true,
+			"multi" : true,
+			"queueSizeLimit" : 1,
+			"onComplete" : _addfile,
+			"fileExt" : "*.jpg;*.jpeg;*.gif;*.png;*.apk;*.pdf;*.docx;*.xlsx",
+			"fileDesc" : "*.jpg;*.jpeg;*.gif;*.png;*.apk;*.pdf;*.docx;*.xlsx",
+		});
+	});
+	/** Add file @author lxl **/
+    function _addfile(event, ID, fileObj, response, data){
+    	var val_data = $.parseJSON(response);
+    	if(val_data.err=='1'){
+    		popup.alert(val_data.message);
+        }else{
+            var _URL = "__Config_Atta__"+val_data.url
+            $("#field_value_"+val_data.id).val(_URL);
+        }
+    }
+})
+    $(".submit_1").click(function(){
+		commonAjaxSubmit("","#submit_modify");
+	});
+</script>
+    </body>
+</html>

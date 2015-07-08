@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>添加、编辑链接-{$site.SITE_INFO.name}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='链接管理 > 添加、编辑链接';
+        </php>
+    <include file="Common:intoHead" />
+ <script>
+ $(function() {
+	  $(".type").change(function(){
+	   	var typeid=$(this).val();
+	   	if(typeid=='1'){
+			$("#img").css("display", "none");	
+		}else{
+			$("#img").show();	
+		}
+	  });
+ });
+ </script>
+</head>
+<body>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current">添加编辑链接</div>
+                        <div class="current" style="float:right;"><a href="__URL__/index">链接列表</a></div>
+                    </div>
+                    <form action="" method="post" enctype="multipart/form-data">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="120">链接名称：</th>
+                                <td><input  name="title" type="text" class="input" size="40" value="{$info.title}" /></td>
+                            </tr>
+                            <tr>
+                                <th>类别：</th>
+                                <td>
+                                    <select class="type" name="type">
+                                        <option value="1" <if condition="$info.type eq 1"> selected </if>>友情链接</option>
+                                        <option value="2" <if condition="$info.type eq 2"> selected </if>>合作伙伴</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>链接地址：</th>
+                                <td><input  name="url" type="text" class="input" size="40" value="{$info.url}" />
+                                	<span style="margin-left:10px;">必须以 http:// 或 https:// 开头</span>
+                                </td>
+                            </tr>
+                            <tr id="img" <if condition="$info.type eq 1 or $info.type eq 0"> style="display:none" </if> >
+                                <th>图片：</th>
+                                <td><input type="file"  name="icon" /><td>
+                            </tr>
+                            </div>
+                            <if condition="$info.icon neq '' and $info.type eq 2">
+                            <tr>
+                                <th></th>
+                                <td>
+                                	<a target="_blank" href="__Link__{$info.icon}"><img src="__Link__{$info.icon}" style=" width:45px; height:45px;" /></a>
+                                <td>
+                            </tr>
+                            </if>
+                            <tr>
+                                <th>排序：</th>
+                                <td><input  name="order" type="text" class="input" size="10" value="{$info.order}" /></td>
+                            </tr>
+                            <tr>
+                                <th>状态：</th>
+                                <td>
+                                    <select name="status" style="width: 80px;">
+                                        <option value="1" <if condition="$info.status eq 1"> selected </if>>启用</option>
+                                        <option value="2" <if condition="$info.status eq 2"> selected </if>>禁用</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <input type="hidden" name="id" value="{$info.id}"/>
+                        <input type="hidden" name="v" value="{$info.v}"/>
+                    </form>
+                    <div class="commonBtnArea">
+                        <button class="btn submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+    $(".submit").click(function(){
+		if($.trim($("input[name='title']").val())==''){
+            popup.alert("链接名称不能为空");
+            return false;
+        }
+        if($.trim($("input[name='url']").val())==''){
+            popup.alert("链接地址不能为空");
+            return false;
+        }
+        commonAjaxSubmit();
+    });
+</script>
+</body>
+</html>

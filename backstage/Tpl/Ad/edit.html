@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>编辑广告-{$site.SITE_INFO.name}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='广告管理 > 编辑广告';
+        </php>
+    <include file="Common:intoHead" />
+    <style type="text/css" >
+    	#sidebar-tab{border:1px solid #ccc;margin-bottom:1.5em;overflow:hidden;}
+		#tab-title h3{color:#666;font-size:12px;font-weight:400;}
+		#tab-title .selected{color:blue;border-bottom:0px;} /*标题被选中时的样式*/
+		#tab-title label {padding:5px 20px 5px 10px;border:1px solid #ccc;border-right:0px;margin-left:-1px;cursor:pointer;}
+		#tab-content .hide{display:none;} /*默认让第一块内容显示，其余隐藏*/
+		#tab-content .tab-con{margin-top:5px;margin-bottom:5px;} /*默认让第一块内容显示，其余隐藏*/
+		
+		.spanImage p{width:150px; height:190px; margin-left:10px; float:left; text-align:center;}
+		.spanImage p img{width:48px; height:60px;}
+		.spanImage .input{margin-top:5px;}
+    </style>
+<script>
+ $(function() {
+	 /** Display none OR SHOW Function **/
+	 function _SHOWHIDDEN(_radio_id){
+		 if(_radio_id=='1'){
+			$("#time").css("display", "none");
+			$("#overdue_con").css("display","none");
+		 }else{
+			$("#time").show();
+			$("#overdue_con").show();
+		 }
+	 }
+	 /** Change **/
+	  $(".time_limit").change(function(){
+		  _SHOWHIDDEN($('input[name="time_limit"]:checked').val());
+	  });
+	/** Default **/
+	  _SHOWHIDDEN($('input[name="time_limit"]:checked').val());
+
+    /** Onload tab default **/
+      var _ADTYPEID = $('input[name="ad_type"]:checked').val();
+	  $("#lab_"+_ADTYPEID).addClass("selected").siblings().removeClass();//removeClass就是删除当前其他类；只有当前对象有addClass("selected")；siblings()意思就是当前对象的同级元素，removeClass就是删除；
+	  $("#tab-content > div").hide().eq($('#tab-title label').index($("#lab_"+_ADTYPEID))).show();
+ });
+ </script>
+</head>
+<body>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current">编辑广告</div>
+                        <div class="current" style="float:right;"><a href="__URL__/index">广告列表</a></div>
+                    </div>
+                    <form action="" method="post">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                        	<tr>
+                                <th width="120">广告名称：</th>
+                                <td><input name="name" type="text" class="input" size="40" value="{$info.name}" /></td>
+                            </tr>
+                            <tr>
+                                <th>广告标识：</th>
+                                <td><input name="mark" type="text" placeholder="例如：BANNER_IMGS" class="input" size="20" value="{$info.mark}"/></td>
+                            </tr>
+                            <tr>
+                            	<th>平台：</th>
+                            	<td>
+                            		<select id="p_select" name="platform">
+										<option value="0">请选择</option>
+			                            <volist name="ad_fltype" id="v" key="k">
+			                             	<option <if condition="$info.platform eq $key"> selected </if> value="{$key}">{$v}</option>
+			                            </volist>
+			                        </select>
+                            	</td>
+                            </tr>
+                            <tr>
+                                <th>时间限制：</th>
+                                <td>
+									<input <if condition="$info.time_limit eq '1' ">  checked="checked" </if> class="time_limit" type="radio" name="time_limit" id="1" value="1" />
+									<label for="1">永不过期</label>
+									<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								  	<input <if condition="$info.time_limit eq '2' ">  checked="checked" </if> class="time_limit" type="radio" name="time_limit" id="2" value="2" />
+								  	<label for="2">在设定时间内有效</label>
+                                </td>
+                            </tr>
+                        	<tr id="time" style="display:none">
+                                <th>投放时间：</th>
+                                <td> 从  <input onchange="value=value.replace(/[^\d\:\-\s]/g,'')" onkeyup="value=value.replace(/[^\d\:\-\s]/g,'')" name="start_time" placeholder="小时分钟秒为00:00:00" id="start_time" value="{$info.start_time|date='Y-m-d H:i:s',###}" type="text" class="input" size="22" />
+                                	   到  <input onchange="value=value.replace(/[^\d\:\-\s]/g,'')" onkeyup="value=value.replace(/[^\d\:\-\s]/g,'')" name="end_time" placeholder="小时分钟秒为23:59:59" id="end_time" value="{$info.end_time|date='Y-m-d H:i:s',###}" type="text" class="input" size="22" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>广告内容：</th>
+                                <td>
+                                	<div id="sidebar-tab">
+										<div id="tab-title">
+											<h3>
+												<input <if condition="$info.ad_type eq '1' ">  checked="checked" </if> style="display:none"  class="ad_type" type="radio" name="ad_type" id="ad_1" value="1" />
+												<label id="lab_1" for="ad_1">
+												<span >代码</span>
+												</label>
+												<input <if condition="$info.ad_type eq '2' ">  checked="checked" </if> style="display:none" class="ad_type"  type="radio" name="ad_type" id="ad_2" value="2" />
+												<label id="lab_2" for="ad_2">
+												<span>文字</span>
+												</label>
+												<input <if condition="$info.ad_type eq '3' ">  checked="checked" </if> style="display:none" class="ad_type"  type="radio" name="ad_type" id="ad_3" value="3" />
+												<label id="lab_3" for="ad_3">
+												<span>图片</span>
+												</label>
+											</h3>
+										</div>
+										<div id="tab-content">
+											<div class="tab-con">
+												<table>
+													<tr>
+														<th>html代码：</th>
+														<td>
+															<textarea name="code" rows="5" cols="50"><if condition="$info.ad_type eq '1' ">{$info.normal_content}
+															</if>
+															</textarea>
+														</td>
+													</tr>
+												</table>
+											</div>
+											<div class="hide tab-con">
+												<table>
+													<if condition="$info.ad_type eq '2' ">
+														<tr>
+														<th>文字代码：</th>
+														<td>
+															<textarea name="text_data" rows="5" cols="50">{$info.normal_content}</textarea>
+														</td>
+														</tr>
+													<else />
+														<tr>
+															<th>文字内容：</th>
+															<td><input name="text_content" type="text" class="input" size="40" placeholder="例如：小林工作室" /></td>
+														</tr>
+														<tr>
+															<th>文字链接：</th>
+															<td><input name="text_link" type="text" class="input" size="40" placeholder="例如：http://lin100.com" /></td>
+														</tr>
+														<tr>
+															<th>文字颜色：</th>
+															<td><input name="text_color" type="text" class="input" size="40" placeholder="例如：red,#EF8684，默认：black" /></td>
+														</tr>
+														<tr>
+															<th>文字大小：</th>
+															<td><input name="text_size" type="text" class="input" size="40" placeholder="例如：4px,12px，默认：12px" /></td>
+														</tr>
+													</if>
+												</table>
+											</div>
+											<div class="hide tab-con">
+												<table>
+													<tr>
+														<th>上传图片：</th>
+														<div id="fileQueue"></div>
+														<td><input id="file_upload" type="file" name="imgname" /></td>
+														<if condition="$info.ad_type eq '3' ">
+														<div id="hiddenValue">
+															<volist name="data" key="k" id="vo_input">
+																<input class="_INPUT{$key}" name="imageList[]" type="hidden" value= "{$vo_input.IMG}" />
+															</volist>
+														</div>
+														<else />
+														<div id="hiddenValue"></div>
+														</if>
+													</tr>
+													<tr>
+														<th></th>
+														<td>
+															<if condition="$info.ad_type eq '3' ">
+															<div class="spanImage" >
+																<volist name="data" key="k" id="vo">
+																<p class="imglist{$key}" >
+																	<img class="imglist{$key}" src="__AD_Img__{$vo.IMG}"/><br><a onclick="_delImages('imglist{$key}','{$vo.IMG}','_INPUT{$key}')" href="javascript:void(0);">删除</a>
+																	<select name="target[]">
+																		<option <if condition="$vo.TAR eq '_blank' ">selected="selected"</if> value="_blank">在新窗口中打开</option>
+																		<option <if condition="$vo.TAR eq '_self' ">selected="selected"</if> value="_self">在当前窗口中打开</option>
+																	</select>
+																	<input type="text" class="input" name="url[]" placeholder="输入需要打开的Url" value="{$vo.URL}" size="20" />
+																	<input type="text" class="input" name="title[]" placeholder="输入图片的Title" value="{$vo.TITLE}" size="20" />
+																</p>
+																</volist>
+															</div>
+															<else />
+															<div class="spanImage" ></div>
+															</if>
+														</td>
+													</tr>
+												</table>
+											</div>
+										</div>
+									</div>
+                                </td>
+                            </tr>
+                            <tr id="overdue_con" style="display:none">
+                                <th>过期内容：</th>
+                                <td>
+                             		<textarea name="overdue_content" rows="4" cols="45">{$info.overdue_content}</textarea></td>
+                                </td>
+                            </tr>
+                            <tr>
+                            	<th>状态：</th>
+                            	<td>
+                            		<select name="status">
+                            			<option <if condition="$info.status eq '1' "> selected = selected</if> value="1">可用</option>
+                            			<option <if condition="$info.status eq '2' "> selected = selected</if> value="2">禁用</option>
+                            		</select>
+                            	</td>
+                            </tr>
+                            <input type="hidden" name="id" value="{$info.id}"/>
+                        	<input type="hidden" name="v" value="{$info.id|Params_Encry}"/>
+                        </table>
+                     </form>
+                    <div class="commonBtnArea">
+                        <button class="btn submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+	<css href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Js/poshytip/tip-yellow/tip-yellow.css|__PUBLIC__/Js/poshytip/tip-yellowsimple/tip-yellowsimple.css|__PUBLIC__/datepicker/datepicker.css|__PUBLIC__/Uploadify/css/uploadify.css"/>
+    <js href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Js/jquery-1.7.2.min.js|__PUBLIC__/Js/jquery.lazyload.js|__PUBLIC__/Js/functions.js|/Js/base.js|__PUBLIC__/Js/jquery.form.js|__PUBLIC__/Js/asyncbox/asyncbox.js|__PUBLIC__/Js/poshytip/jquery.poshytip.min.js|__PUBLIC__/datepicker/datepicker.js"/>
+	<js href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Uploadify/scripts/swfobject.js|__PUBLIC__/Uploadify/scripts/jquery.uploadify.v2.1.0.js"/>
+<include file="Common:foot" />
+<script type="text/javascript">
+    $(function() {
+    	$("#start_time").DatePicker({
+			format:'Y-m-d',
+			date: $("#start_time").val(),
+			starts: 1,
+			position: 'bottom',
+			enablePast:true,
+			onBeforeShow: function(){
+			},
+			onChange: function(formated,dates){
+					$("#start_time").val(formated);
+			}
+		});
+		$("#end_time").DatePicker({
+			format:'Y-m-d',
+			date: $("#end_time").val(),
+			starts: 1,
+			position: 'bottom',
+			enablePast:true,
+			onBeforeShow: function(){
+			},
+			onChange: function(formated,dates){
+					$("#end_time").val(formated);
+			}
+		});
+		/** File_Upload @author lxl **/
+		$('#file_upload').uploadify({  
+        	"uploader" : "__PUBLIC__/Uploadify/scripts/uploadify.swf",
+            "cancelImg" : "__PUBLIC__/Uploadify/cancel.png",
+            "script" : "{:U('Public/Upload_File',array('t'=>'ad_imgs'))}",
+			"fileQueue":"fileQueue",
+			"auto" : true,
+			"multi" : true,
+			"queueSizeLimit" : 5,
+			"onComplete" : _addImages,
+			"fileExt" : "*.jpg;*.jpeg;*.gif;*.png",
+			"fileDesc" : "*.jpg;*.jpeg;*.gif;*.png",
+        });
+        /** TAB Change @author lxl **/
+		$('#tab-title label').click(function(){
+			$(this).addClass("selected").siblings().removeClass();//removeClass就是删除当前其他类；只有当前对象有addClass("selected")；siblings()意思就是当前对象的同级元素，removeClass就是删除；
+			$("#tab-content > div").hide().eq($('#tab-title label').index(this)).show();
+		});
+    }); 
+    /** Add Images @author lxl **/
+    function _addImages(event, ID, fileObj, response, data){
+    	var val = $.parseJSON(response);
+    	if(val.err=='1'){
+    		popup.alert(val.message);
+        }else{
+        	var _spanImageVal = $('.spanImage').html();
+        	var _delID= "'imglist"+ID+"'";
+        	var _imageName = "'"+val.url+"'";
+        	var _inputID = "'_INPUT"+ID+"'";
+    		var _delFun = 'onclick="_delImages('+_delID+','+_imageName+','+_inputID+')"';
+    		$('.spanImage').html(_spanImageVal + '<p class="imglist'+ID+'"><img src="__AD_Img__'+val.url+'"/><br><a href="javascript:void(0);" '+_delFun+'>删除</a><select name="target[]"><option selected="selected" value="_blank">在新窗口中打开</option><option value="_self">在当前窗口中打开</option></select><input type="text" name="url[]" placeholder="输入打开的URL" class="input" size="20" /><input type="text" name="title[]" placeholder="输入图片的Title" class="input" size="20" /></p>');
+			var _hiddenValue = $('#hiddenValue').html();
+        	$('#hiddenValue').html(_hiddenValue + '<input class="_INPUT'+ID+'" name="imageList[]" type="hidden" value= "'+val.url+'" />');
+        }
+    }
+    /** Del Images @author lxl **/
+    function _delImages(id,imagename,inputid){
+		$.post("{:U('Public/Del_Images')}",{name:imagename,type:'ad'},function(data){
+			if(data.error) {
+				popup.alert(data.error);
+			}else{
+				$('.'+id).remove();
+				$('.'+inputid).remove();
+			}
+		},"json");
+	}
+    $(".submit").click(function(){
+    	if($.trim($("input[name='name']").val())==''){
+            popup.alert("广告位名称不能为空");
+            return false;
+        }
+    	if($.trim($("input[name='mark']").val())==''){
+            popup.alert("广告位标识不能为空");
+            return false;
+        }
+    	if($("#p_select").val()=='0'){
+            popup.alert("平台不能为空");
+            return false;
+        }
+        commonAjaxSubmit();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>详情-{$site.SITE_INFO.name}</title>
+		<php>
+			$addCss="";
+			$addJs="";
+			$currentNav ='链接管理 > 详情';
+		</php>
+		<include file="Common:intoHead" />
+	</head>
+	<body>
+		<div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">详情</div>
+                    </div>
+					<div>
+					</div>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                        <thead>
+                            <tr>
+                                <td width="20%">名称:</td>
+                                <td>{$info.title|SetDefaultValue}</td>
+                            </tr>
+                            <tr>
+                                <td>类别:</td>
+                                <td>
+                                	<if condition="$info.type eq 1">
+                                	友情链接
+                                	<elseif condition="$info.type eq 2" />
+                                	合作伙伴
+                                	</if>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>链接地址:</td>
+                                <td>{$info.url|SetDefaultValue}</td>
+                            </tr>
+                            <if condition="$info.icon neq '' and $info.type eq 2">
+                            <tr>
+                                <td>图片:</td>
+                                <td><img src="__Link__{$info.icon}" /></td>
+                            </tr>
+                            </if>
+                            <tr>
+                                <td>排序:</td>
+                                <td>{$info.order}</td>
+                            </tr>
+                            <tr>
+                                <td>状态:</td>
+                                <td>
+                                <if condition="$info.status eq '1' ">
+                                	<span style="color:#090">可用</span>
+                                <elseif condition="$info.status eq '2'"  />
+                                	<span style="color:#F00">禁用</span>
+                                </if>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>创建时间:</td>
+                                <td>
+                                	<if condition="$info.create_time eq '0' ">
+                                	--
+                                	<else />
+                                	{$info.create_time|date='Y-m-d H:i:s',###}
+                                	</if>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>更新时间:</td>
+                                <td>
+                                	<if condition="$info.update_time eq '0' ">
+                                	--
+                                	<else />
+                                	{$info.update_time|date='Y-m-d H:i:s',###}
+                                	</if>
+                                </td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <css href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Js/poshytip/tip-yellow/tip-yellow.css|__PUBLIC__/Js/poshytip/tip-yellowsimple/tip-yellowsimple.css|__PUBLIC__/datepicker/datepicker.css"/>
+        <js href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Js/jquery-1.7.2.min.js|__PUBLIC__/Js/jquery.lazyload.js|__PUBLIC__/Js/functions.js|/Js/base.js|__PUBLIC__/Js/jquery.form.js|__PUBLIC__/Js/asyncbox/asyncbox.js|__PUBLIC__/Js/poshytip/jquery.poshytip.min.js|__PUBLIC__/datepicker/datepicker.js"/>
+        <include file="Common:foot" />
+    </body>
+</html>

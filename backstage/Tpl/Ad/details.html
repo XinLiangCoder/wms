@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>详情-{$site.SITE_INFO.name}</title>
+		<php>
+			$addCss="";
+			$addJs="";
+			$currentNav ='广告管理 > 详情';
+		</php>
+		<include file="Common:intoHead" />
+		<style type="text/css" >
+		.spanImage p{width:48px; height:60px; margin-left:10px; float:left; text-align:center;}
+		.spanImage p img{width:48px; height:60px;}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">详情</div>
+                    </div>
+					<div>
+					</div>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                        <thead>
+                            <tr>
+                                <td width="20%">广告位名称:</td>
+                                <td>{$info.name|SetDefaultValue}
+                                	<span style="margin-left:20px;">标识：{$info.mark|SetDefaultValue}</span>
+                                	<span style="margin-left:20px;">平台：
+                                	<volist name="ad_fltype" id="v" key="k">
+		                             	<if condition="$info.platform eq $key"> {$v} </if>
+		                            </volist>
+                                	</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>状态:</td>
+                                <td>
+                                <if condition="$info.status eq '1' ">
+                                	<span style="color:#090">可用</span>
+                                <elseif condition="$info.status eq '2'"  />
+                                	<span style="color:#F00">禁用</span>
+                                </if>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>有效期:</td>
+                                <td>
+                                	<if condition="$info.time_limit eq '1' ">
+                                		永不过期
+                                	<elseif condition="$info.time_limit eq '2'"  />	
+                                		时间限制：
+                                		从：{$info.start_time|date='Y-m-d H:i:s',###} 到：{$info.end_time|date='Y-m-d H:i:s',###}
+                                	</if>
+                                </td>
+                            </tr>
+                            <tr>
+                            	<td>显示内容：</td>
+                            	<td>
+                            		<if condition="$data eq '' ">
+                            			{$info.normal_content}
+                            		<else />
+                            		  <div class="spanImage">
+                            			<volist name="data" key="k" id="vo">
+										<p><a target="{$vo.TAR}" href="{$vo.URL}"><img title="{$vo.TITLE}" src="__AD_Img__{$vo.IMG}"/></a></p>
+										</volist>
+									  </div>
+                            		</if>
+                            	</td>
+                            </tr>
+                            <if condition="$info.time_limit eq '2' ">
+                            <tr>
+                            	<td>过期内容：</td>
+                            	<td>
+                            		<if condition="$info.overdue_content eq NULL ">
+                            			--
+                            		<else />
+                            			{$info.overdue_content}
+                            		</if>
+                            	</td>
+                            </tr>
+                            </if>
+                            <tr>
+                                <td>创建时间:</td>
+                                <td>
+                                	<if condition="$info.create_time eq '0' ">
+                                	--
+                                	<else />
+                                	{$info.create_time|date='Y-m-d H:i:s',###}
+                                	</if>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>更新时间:</td>
+                                <td>
+                                	<if condition="$info.update_time eq '0' ">
+                                	--
+                                	<else />
+                                	{$info.update_time|date='Y-m-d H:i:s',###}
+                                	</if>
+                                </td>
+                            </tr>
+                        </thead>
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <css href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Js/poshytip/tip-yellow/tip-yellow.css|__PUBLIC__/Js/poshytip/tip-yellowsimple/tip-yellowsimple.css|__PUBLIC__/datepicker/datepicker.css"/>
+        <js href="{$site.WEB_ROOT}Public/Min/?f=__PUBLIC__/Js/jquery-1.7.2.min.js|__PUBLIC__/Js/jquery.lazyload.js|__PUBLIC__/Js/functions.js|/Js/base.js|__PUBLIC__/Js/jquery.form.js|__PUBLIC__/Js/asyncbox/asyncbox.js|__PUBLIC__/Js/poshytip/jquery.poshytip.min.js|__PUBLIC__/datepicker/datepicker.js"/>
+        <include file="Common:foot" />
+    </body>
+</html>

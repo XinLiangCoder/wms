@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>资讯管理-{$site.SITE_INFO.name}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='资讯管理 > 资讯列表';
+        </php>
+        <include file="Common:intoHead" />
+        <script>
+	$(function() {
+	  $(".cat").change(function(){
+	   var cat=$(this).val();
+	   $.post("__URL__/getSubCat",{
+		fid:cat,
+	   },function(json){
+		var data=json;//;
+
+		$(".subcat").empty();
+		if(data.data.length){
+			$(".subcat").append("<select name=\"category_id\" class=\"subcat\">");
+			for(var i=0;i<data.data.length;i++){
+				$(".subcat").append("<option value="+data.data[i].id+">"+data.data[i].name+"</option>");
+			}
+			$(".subcat").append("</select>");
+		}
+	   });
+	  });
+	 });
+ </script>
+    </head>
+    <body>
+        <div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">资讯列表</div>
+                        <div class="current" style="float:right;"><a href="__URL__/add">添加资讯</a></div>
+                    </div>
+                    <div>
+					<form action="" method="get">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+					<tr>
+						<td>类别：
+								<select name="parent_category_id" class='cat'>
+									<option value=""> 请选择分类 </option>
+									<volist name="category" id="vo">
+										<option value="{$vo.id}" <if condition="$vo.id == $s['parent_category_id']"> selected="selected" </if>> {$vo.name} </option>
+									</volist>
+								</select>
+								<span class="subcat">
+										<if condition="$son_list neq NULL"> 
+											<select name="category_id">
+												<volist name="son_list" id="son_v">
+		                                             <option <if condition="$son_v['id'] eq $s['category_id']"> selected="selected" </if> value="{$son_v.id}">{$son_v['name']}</option>
+		                                        </volist>
+											</select>
+										</if>
+								</span>
+						</td>
+                        <td>标题：<input type="text" class="input" name="s_title" size="30" value="{$s.s_title}"></td>
+                        <td>状态：
+                        		<select name="s_status">
+                        			<option value="0">请选择</option>                            
+                                    <option value="1" <if condition="$s.s_status eq 1"> selected="selected"</if>>启用</option>
+                                    <option value="2" <if condition="$s.s_status eq 2"> selected="selected"</if>>禁用</option>
+                        		</select>
+                        </td>
+                        <td><input type="submit" name="sub" class="btn" value="查询"></td>
+                        </tr>
+					</table>
+					</form>
+					</div>
+					<form id="_Table" action="" method="post">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                        <thead>
+                            <tr>
+                            	<td width="90"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                                <td>编号</td>
+                                <td>标题</td>
+                                <td>分类</td>
+                                <td>状态</td>
+                                <td>发布时间</td>
+                                <td>更新时间</td>
+                                <td>创建时间</td>
+                                <td width="150">操作</td>
+                            </tr>
+                        </thead>
+                        <volist name="list" id="vo">
+                            <tr align="center" id="{$vo.id}">
+                            	<td><input type="checkbox" name="ids[]" value="{$vo.id}"/></td>
+                                <td>{$vo.id}</td>
+                                <td>{$vo.title|SetDefaultValue}</td>
+                                <td>{$vo.category_id|GetNewsCateName}</td>
+								<td>
+								<if condition="$vo.status eq '1' ">
+                                	<span style="color:#090">启用</span>
+                                <elseif condition="$vo.status eq '2'"  />
+                                	<span style="color:#F00">禁用</span>
+                                </if>
+                                </td>
+                                <td>
+                                	<if condition="$vo.publish_time eq '0' ">
+                                	--
+	                                <else />
+	                                	{$vo.publish_time|date='Y-m-d H:i:s',###}
+	                                </if>
+                                </td>
+                                <td>
+                                	<if condition="$vo.update_time eq '0' ">
+                                	--
+	                                <else />
+	                                	{$vo.update_time|date='Y-m-d H:i:s',###}
+	                                </if>
+                                </td>
+                                <td>
+                                	<if condition="$vo.create_time eq '0' ">
+                                	--
+	                                <else />
+	                                	{$vo.create_time|date='Y-m-d H:i:s',###}
+	                                </if>
+                                </td>
+                                <td>
+                                	[ <a href="__URL__/edit/id/{$vo.id}/v/{$vo.id|Params_Encry}">编辑</a> ]
+                                	<if condition="$vo.status eq '1'">
+                                	[ <a class="update" href="javascript:void(0)" link="__URL__/status/id/{$vo.id}/s/2/v/{$vo.id|Params_Encry}">禁用</a> ]
+                                	<elseif condition="$vo.status eq '2'" />
+                                	[ <a class="update" href="javascript:void(0)" link="__URL__/status/id/{$vo.id}/s/1/v/{$vo.id|Params_Encry}">启用</a> ]
+                                	</if>
+                                	</td>
+                            </tr>
+                        </volist>
+                    </table>
+                    </form>
+                    <div class="commonBtnArea" >
+                    	<button class="btn submit">删除所选</button>
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <include file="Common:foot" />
+  <script type="text/javascript">
+	$(function(){
+        $(".update").click(function(){
+					var _URL = $(this).attr("link");
+					popup.confirm('你确定要执行吗？','温馨提示',function(action){
+						if(action == 'ok'){
+							$.get(_URL,function(_DATA){
+								if(_DATA.status == 1){
+									popup.alert(_DATA.msg);
+									setTimeout("location.reload()",1000);
+								}else{
+									popup.alert(_DATA.msg);
+									setTimeout("location.reload()",1000);
+								}
+							},"json");
+						}
+					});
+					return false;
+				});
+        /** 全选 OR 反选 **/
+		clickCheckbox();  
+		$(".submit").click(function(){
+			if($("tbody input[type='checkbox']:checked").size()==0){
+                popup.alert("请先选择你要删除的数据");
+                return false;
+            }else{
+            	popup.confirm('你确定要删除吗？','温馨提示',function(action){
+            		if(action == 'ok'){
+            			if($(".submit").attr("disabledSubmit")){
+                            popup.alert("已提交，系统在处理中...");
+                        }else{
+                            $(".submit").attr("disabledSubmit",true).html("处理中...");
+                            commonAjaxSubmit("__URL__/del","#_Table");
+                            //popup.alert("系统处理中，如果删除较多可能需要较长时间，请稍候....");
+                            setTimeout(function(){
+                                popup.close("asyncbox_alert");
+                            },2000);
+                        }
+	            	}
+	            });
+	        }
+		});
+				})
+		</script>
+    </body>
+</html>
