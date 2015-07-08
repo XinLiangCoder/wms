@@ -1,11 +1,11 @@
 # wms
 欢迎大家使用后台管理系统v1.0
 
-源码框架为：Thinkphp ，源代码中所有的文件均可修改！
-
-运行环境：LAMP 、LNMP 。（windows可能会出现错误，但是调试起来也很简单）。
-
-不要重复造轮子 (Stop Trying to Reinvent the Wheel)，希望能帮助大家少走弯路。
+      源码框架为：Thinkphp ，源代码中所有的文件均可修改！
+      
+      运行环境：LAMP 、LNMP 。（windows可能会出现错误，但是调试起来也很简单）。
+      
+      不要重复造轮子 (Stop Trying to Reinvent the Wheel)，希望能帮助大家少走弯路。
 
 域名配置：
 
@@ -33,4 +33,5 @@
 
       密码：admin
 
-【作者】QQ：109760455
+【作者】
+      QQ：109760455
