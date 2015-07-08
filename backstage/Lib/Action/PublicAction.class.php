@@ -155,10 +155,6 @@ class PublicAction extends Action {
 			  $saveRule = '';
 			  break;
 		}
-		/** 针对36 环境 因为有两层 firsthouse-static**/
-		if(strstr($path,'firsthouse-back/')){
-			$path = str_replace('firsthouse-back/','firsthouse-static/',$path);
-		}
 		mkdir($path);
 	    import("ORG.Net.UploadFile");
 	    $Upload = new UploadFile();
@@ -190,10 +186,6 @@ class PublicAction extends Action {
 			$name = $this->_post('name');
 			if($type=="ad"){
 				$path = C('UPLOAD_PATH.AD');
-			}
-	  		/** 针对36 环境 因为有两层 firsthouse-static**/
-			if(strstr($path,'firsthouse-back/')){
-				$path = str_replace('firsthouse-back/','firsthouse-static/',$path);
 			}
 			if(!unlink($path.'/'.$name)){
 				die(json_encode(array('error'=>'删除失败')));
